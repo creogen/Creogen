@@ -44,14 +44,11 @@ class Creogen_Form extends Zend_Form
 
     public function loadDefaultDecorators()
     {
-        if ($this->viewScript)
-        {
+        if ($this->viewScript) {
             $this->setDecorators(array(
                 array('ViewScript', array('viewScript' => $this->viewScript))
             ));
-        }
-        else
-        {
+        } else {
             $this->setDecorators(array(
                 'FormElements',
                 'Fieldset',

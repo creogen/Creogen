@@ -34,8 +34,7 @@ class Creogen_DomainObject
      */
     public function setProperty($name, $value, $init = false)
     {
-        if (!$init && (!isset($this->_params[ $name ]) || $this->_params[ $name ] != $value))
-        {
+        if (!$init && (!isset($this->_params[ $name ]) || $this->_params[ $name ] != $value))  {
             $this->_modified[] = $name;
         }
 
@@ -88,8 +87,7 @@ class Creogen_DomainObject
     {
         $return = array();
 
-        foreach ($this->_modified as $name)
-        {
+        foreach ($this->_modified as $name) {
             $return[ $name ] = $this->getProperty( $name );
         }
 
@@ -103,8 +101,7 @@ class Creogen_DomainObject
      */
     public function setPropertyArray(array $data, $init = false)
     {
-        foreach ($data as $name => $value)
-        {
+        foreach ($data as $name => $value) {
             $this->setProperty($name, $value, $init);
         }
 

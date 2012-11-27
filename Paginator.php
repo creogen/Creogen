@@ -22,20 +22,17 @@ class Creogen_Paginator
 
     public function getCachedResults()
     {
-        if (!is_null($this->results))
-        {
+        if (!is_null($this->results)) {
             return $this->results;
         }
 
-        if (!count($this))
-        {
+        if (!count($this)) {
             $this->results = array();
             return $this->results;
         }
 
         $ret = array();
-        foreach ($this->paginator as $row)
-        {
+        foreach ($this->paginator as $row) {
             $ret[] = $this->mapper->find($row['id']);
         }
         $this->results = $ret;

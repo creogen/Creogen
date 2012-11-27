@@ -34,13 +34,11 @@ class Creogen_DataMapper
      */
     public function setDbTable($dbTable)
     {
-        if (is_string($dbTable))
-        {
+        if (is_string($dbTable)) {
             $dbTable = new $dbTable();
         }
 
-        if (!$dbTable instanceof Zend_Db_Table_Abstract)
-        {
+        if (!$dbTable instanceof Zend_Db_Table_Abstract) {
             throw new Exception('Invalid table data gateway provided');
         }
 
@@ -64,8 +62,7 @@ class Creogen_DataMapper
      */
     public function getDbTable()
     {
-        if (null === $this->_dbTable)
-        {
+        if (null === $this->_dbTable) {
             $this->setDbTable( $this->_dbTableClass );
         }
 
@@ -80,25 +77,20 @@ class Creogen_DataMapper
     {
         $cacheKey = sprintf($this->getCacheKey(), $id);
 
-        if ($useCache && self::$_cache && self::$_cache->test( $cacheKey ))
-        {
+        if ($useCache && self::$_cache && self::$_cache->test( $cacheKey )) {
             $properties = self::$_cache->load( $cacheKey );
-        }
-        else
-        {
+        } else {
             $data = $this->getDbTable()->find($id);
 
-            if ( 0 == count($data) )
-            {
+            if (0 == count($data)) {
                 return null;
             }
 
             $row = $data->current();
             $properties = $row->toArray();
 
-            if ($useCache && self::$_cache)
-            {
-                self::$_cache->save( $properties, $cacheKey );
+            if ($useCache && self::$_cache) {
+                self::$_cache->save($properties, $cacheKey);
             }
 
         }
@@ -108,7 +100,7 @@ class Creogen_DataMapper
          */
         $object = new $this->_domainObject;
 
-        $object->setPropertyArray( $properties, true );
+        $object->setPropertyArray($properties, true);
 
         return $object;
     }
@@ -119,12 +111,10 @@ class Creogen_DataMapper
      */
     public function findOrCreate($id)
     {
-        if ($id)
-        {
+        if ($id) {
             $object = $this->find($id);
 
-            if ($object)
-            {
+            if ($object) {
                 return $object;
             }
         }
@@ -161,8 +151,7 @@ class Creogen_DataMapper
 
         $objects = array();
 
-        foreach ($resultSet as $row)
-        {
+        foreach ($resultSet as $row) {
             /**
              * @var Creogen_DomainObject $Object
              */
@@ -179,24 +168,19 @@ class Creogen_DataMapper
      */
     public function save(Creogen_DomainObject $object)
     {
-        if (null === ($id = $object->getId()))
-        {
+        if (null === ($id = $object->getId())) {
             $data = $object->getPropertyArray();
             unset($data['id']);
             $id = $this->getDbTable()->insert($data);
             $object->setId($id);
-        }
-        else
-        {
+        } else {
             $data = $object->getModifiedProperties();
-            if (count($data))
-            {
+            if (count($data)) {
                 $this->getDbTable()->update($data, array('id = ?' => $id));
             }
         }
 
-        if (self::$_cache)
-        {
+        if (self::$_cache) {
         	$cacheKey = sprintf($this->getCacheKey(), $object->getId());
         	self::$_cache->remove($cacheKey);
         }
@@ -208,13 +192,11 @@ class Creogen_DataMapper
      */
     public function drop(Creogen_DomainObject $object)
     {
-        if (!$id = $object->getId())
-        {
+        if (!$id = $object->getId()) {
             return false;
         }
 
-        if (self::$_cache)
-        {
+        if (self::$_cache) {
             $cacheKey = sprintf($this->getCacheKey(), $id);
             self::$_cache->remove($cacheKey);
         }
@@ -227,8 +209,7 @@ class Creogen_DataMapper
      */
     public static function getInstance($className)
     {
-        if (empty(self::$_instances[$className]))
-        {
+        if (empty(self::$_instances[$className])) {
             self::$_instances[$className] = new $className();
         }
 
